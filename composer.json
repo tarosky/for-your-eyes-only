@@ -1,0 +1,25 @@
+{
+    "name": "hametuha/for-your-eyes-only",
+    "description": "A restricted block only for specified users.",
+    "type": "wordpress-plugin",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Hametuha INC",
+            "email": "info@hametuha.co.jp"
+        }
+    ],
+    "scripts": {
+        "test": "phpunit"
+    },
+    "minimum-stability": "stable",
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "5.7.27"
+    },
+    "autoload": {
+        "psr-0": {
+            "Hametuha\\ForYourEyesOnly": "app"
+        }
+    }
+}

@@ -1,0 +1,55 @@
+.wp-block-fyeo-block{
+
+  $border-width: 3px;
+  $bg-color: #eee;
+  $fg-color: #000;
+
+  padding: 1em;
+  position: relative;
+  border: $border-width dashed transparent;
+  transition: border-color .3s linear;
+  &:hover, &:active, &:focus{
+    border-color: $bg-color;
+    & .wp-block-fyeo-block__label{
+      color: $fg-color;
+      background-color: $bg-color;
+    }
+    &:before{
+      color: transparent;
+    }
+  }
+
+  &:before{
+    content: "\f530";
+    transition: color .3s linear;
+    font-family: Dashicons;
+    color: $bg-color;
+    position: absolute;
+    z-index: 1;
+    top: 50%;
+    left: 50%;
+    font-size: 120px;
+    transform: translate( -50%, -50% );
+  }
+
+  &__label{
+    position: absolute;
+    font-weight: bold;
+    right: -1 * $border-width;
+    top: -1 * $border-width;
+    display: block;
+    padding: 0.5em 1em;
+    color: $bg-color;
+    background-color: transparent;
+    font-family: monospace;
+    font-size: 14px;
+    transition: color .3s linear, background-color .3s linear;
+  }
+
+  .editor-inner-blocks{
+    position: relative;
+    z-index: 3;
+  }
+
+
+}
