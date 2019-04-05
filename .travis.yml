@@ -44,7 +44,7 @@ after_success: curl -L https://raw.githubusercontent.com/miya0001/travis2wpplugi
 
 before_deploy:
   - bash bin/build.sh
-  - zip -r ../for-your-eyes-only.zip for-your-eyes-only
+  - zip -r ../for-your-eyes-only.zip .
   - mv ../for-your-eyes-only.zip ./
   - export RELEASE_FILE=for-your-eyes-only.zip
 

@@ -2,8 +2,13 @@
 
 set -ex
 
-rm -rf vendor
+if [ -d vendor ]; then
+    rm -rf vendor
+fi
 composer install --no-dev
+if [ -d node_modules ]; then
+    rm -rf node_modules
+fi
 npm install
 npm start
 curl -L https://raw.githubusercontent.com/fumikito/wp-readme/master/wp-readme.php | php
