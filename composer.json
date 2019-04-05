@@ -13,7 +13,9 @@
         "test": "phpunit"
     },
     "minimum-stability": "stable",
-    "require": {},
+    "require": {
+        "masterminds/html5": "^2.6"
+    },
     "require-dev": {
         "phpunit/phpunit": "5.7.27"
     },

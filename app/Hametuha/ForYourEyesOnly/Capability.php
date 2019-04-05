@@ -18,11 +18,11 @@ class Capability extends Pattern\Singleton {
 	 */
 	public function capabilities_list() {
 		return apply_filters( 'fyeo_capabilities_list', [
-			'subscriber'    => __( 'Subscriber', 'fyeo' ),
-			'contributor'   => __( 'Contributor', 'fyeo' ),
-			'author'        => __( 'Author', 'fyeo' ),
-			'editor'        => __( 'Editor', 'fyeo' ),
-			'administrator' => __( 'Administrator', 'fyeo' ),
+			'read'              => __( 'Subscriber', 'fyeo' ),
+			'edit_posts'        => __( 'Contributor', 'fyeo' ),
+			'publish_posts'     => __( 'Author', 'fyeo' ),
+			'edit_others_posts' => __( 'Editor', 'fyeo' ),
+			'manage_options'    => __( 'Administrator', 'fyeo' ),
 		] );
 	}
 
@@ -57,9 +57,9 @@ class Capability extends Pattern\Singleton {
 	protected function map_old_cap( $cap ) {
 		switch ( $cap ) {
 			case 'reader':
-				return 'subscriber';
+				return 'read';
 			case 'writer':
-				return 'author';
+				return 'edit_post';
 			default:
 				return $cap;
 		}

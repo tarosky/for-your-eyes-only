@@ -63,6 +63,28 @@ abstract class Singleton {
 	}
 
 	/**
+	 * Detect if cookie-tasting exists.
+	 *
+	 * @return bool
+	 */
+	public function cookie_tasting_exists() {
+		return function_exists( 'cookie_tasting_version' );
+	}
+
+	/**
+	 * Add plugin dependencies.
+	 *
+	 * @param array $deps
+	 * @return array
+	 */
+	public function add_plugin_deps( $deps ) {
+		if ( $this->cookie_tasting_exists() ) {
+			$deps[] = 'cookie-tasting-heartbeat';
+		}
+		return $deps;
+	}
+
+	/**
 	 * Getter
 	 *
 	 * @param string $name

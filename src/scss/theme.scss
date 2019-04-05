@@ -1,0 +1,61 @@
+@charset "UTF-8";
+
+
+.fyeo-content{
+
+  &:after, &:before{
+    content: "";
+    transition: opacity .3s linear;
+    opacity: 0;
+  }
+
+  &-error{
+
+    position: relative;
+
+    &-string{
+      font-family: monospace;
+      background-color: red;
+      color: #fff;
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 12px;
+      padding: 0.25em 0.5em;
+    }
+
+  }
+
+  &-loading{
+
+
+    position: relative;
+    z-index: 1;
+    &:before{
+      opacity: 1;
+      position: absolute;
+      z-index: 101;
+      content: "";
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba( 255, 255, 255, .8 );
+    }
+    &:after{
+      opacity: 1;
+      content: "";
+      background: url( "../img/ripple.gif" ) left top no-repeat;
+      width: 64px;
+      height: 64px;
+      background-size: cover;
+      z-index: 102;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate( -50%, -50% );
+      color: #000;
+    }
+  }
+
+}
