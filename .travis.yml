@@ -28,6 +28,11 @@ matrix:
         - WP_VERSION=latest
         - WP_PULUGIN_DEPLOY=1
 
+env:
+  global:
+    - SVN_REPO: https://plugins.svn.wordpress.org/for-your-eyes-only/
+    - secure: "vQB7bDMYQnupkTvkdmxjLokdnFoea5hlu+H1P19OnWKRd1ueC2J4/0230cc203AdBR1kMgs2dUtzSA/VOL3SGYEY+dBjbS/dq2eWlXwZZpP3fJ2sHVhIKMbA3Re2Hn7B3ioeAAHsZ3JBiY5cPutW6mEaF0iVDgAzPG6GfvrWCXpHjF8uktJnC0eYqeh/lxvH5ZuhW6bs6Hswb7eHJ9srOJsrXqfWf13B1ocHGU+merME6A/k/ABNeesqfcf8qmRmhvd90J/TE5bfNZSCuMOyUXGFQsJ52IMERyCNu5Sdj5fvmmgyDtkj7MVUKC/ihCDGcRx3ZzlVQ19P4sye1erCSn+I5PzFzgWJ8hzk5GpgB0IQIY2ouvh1SpKHtJ+QgXq0GAEb3AgecbRyUMtnxJmDMW1Q4Q/JCOlxgywR/ZowWdRR8a3z7e0gqxdtya2UzjQk52yiNwva2n1GiTlOIfK0TNHlRs0k9RvlbQx219yM3ZyXti7zu17keCCZbTFhpMzrpHa0cUmAwJt64qaTtEtGAc5fbs0ojqPJRad+drD6UGselBDfHuEcCAjT83PivOruQ/YA+7XXkiT0HtcQsTjq5g10tarQrJS98F1iAZrA2iP0rk9NnvHwsEWoZE2h4efPP/zVg8Bru15jzztnjCOoJ2RQtVrVIEhxdHduGlj52YA="
+
 before_script:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
   - |
