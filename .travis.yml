@@ -1,65 +1,60 @@
 sudo: false
 dist: trusty
-
 language: php
-
 notifications:
   email:
     on_success: never
     on_failure: change
-
 branches:
   only:
-    - master
-    - v?[0-9.]+
-
+  - master
+  - v?[0-9.]+
 cache:
   directories:
-    - $HOME/.composer/cache
-
+  - "$HOME/.composer/cache"
 matrix:
   include:
-    - php: 7.2
-      env: WP_VERSION=latest
-    - php: 7.1
-      env: WP_VERSION=latest
-    - php: 7.0
-      env:
-        - WP_VERSION=latest
-        - WP_PULUGIN_DEPLOY=1
-
+  - php: 7.2
+    env: WP_VERSION=latest
+  - php: 7.1
+    env: WP_VERSION=latest
+  - php: 7.0
+    env:
+    - WP_VERSION=latest
+    - WP_PULUGIN_DEPLOY=1
 env:
   global:
-    - SVN_REPO: https://plugins.svn.wordpress.org/for-your-eyes-only/
-    - secure: "vQB7bDMYQnupkTvkdmxjLokdnFoea5hlu+H1P19OnWKRd1ueC2J4/0230cc203AdBR1kMgs2dUtzSA/VOL3SGYEY+dBjbS/dq2eWlXwZZpP3fJ2sHVhIKMbA3Re2Hn7B3ioeAAHsZ3JBiY5cPutW6mEaF0iVDgAzPG6GfvrWCXpHjF8uktJnC0eYqeh/lxvH5ZuhW6bs6Hswb7eHJ9srOJsrXqfWf13B1ocHGU+merME6A/k/ABNeesqfcf8qmRmhvd90J/TE5bfNZSCuMOyUXGFQsJ52IMERyCNu5Sdj5fvmmgyDtkj7MVUKC/ihCDGcRx3ZzlVQ19P4sye1erCSn+I5PzFzgWJ8hzk5GpgB0IQIY2ouvh1SpKHtJ+QgXq0GAEb3AgecbRyUMtnxJmDMW1Q4Q/JCOlxgywR/ZowWdRR8a3z7e0gqxdtya2UzjQk52yiNwva2n1GiTlOIfK0TNHlRs0k9RvlbQx219yM3ZyXti7zu17keCCZbTFhpMzrpHa0cUmAwJt64qaTtEtGAc5fbs0ojqPJRad+drD6UGselBDfHuEcCAjT83PivOruQ/YA+7XXkiT0HtcQsTjq5g10tarQrJS98F1iAZrA2iP0rk9NnvHwsEWoZE2h4efPP/zVg8Bru15jzztnjCOoJ2RQtVrVIEhxdHduGlj52YA="
+  - SVN_REPO: https://plugins.svn.wordpress.org/for-your-eyes-only/
+  - secure: vQB7bDMYQnupkTvkdmxjLokdnFoea5hlu+H1P19OnWKRd1ueC2J4/0230cc203AdBR1kMgs2dUtzSA/VOL3SGYEY+dBjbS/dq2eWlXwZZpP3fJ2sHVhIKMbA3Re2Hn7B3ioeAAHsZ3JBiY5cPutW6mEaF0iVDgAzPG6GfvrWCXpHjF8uktJnC0eYqeh/lxvH5ZuhW6bs6Hswb7eHJ9srOJsrXqfWf13B1ocHGU+merME6A/k/ABNeesqfcf8qmRmhvd90J/TE5bfNZSCuMOyUXGFQsJ52IMERyCNu5Sdj5fvmmgyDtkj7MVUKC/ihCDGcRx3ZzlVQ19P4sye1erCSn+I5PzFzgWJ8hzk5GpgB0IQIY2ouvh1SpKHtJ+QgXq0GAEb3AgecbRyUMtnxJmDMW1Q4Q/JCOlxgywR/ZowWdRR8a3z7e0gqxdtya2UzjQk52yiNwva2n1GiTlOIfK0TNHlRs0k9RvlbQx219yM3ZyXti7zu17keCCZbTFhpMzrpHa0cUmAwJt64qaTtEtGAc5fbs0ojqPJRad+drD6UGselBDfHuEcCAjT83PivOruQ/YA+7XXkiT0HtcQsTjq5g10tarQrJS98F1iAZrA2iP0rk9NnvHwsEWoZE2h4efPP/zVg8Bru15jzztnjCOoJ2RQtVrVIEhxdHduGlj52YA=
 
 before_script:
-  - export PATH="$HOME/.composer/vendor/bin:$PATH"
-  - |
-    if [ -f ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ]; then
-      phpenv config-rm xdebug.ini
-    else
-      echo "xdebug.ini does not exist"
-    fi
-  - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
-      composer global require "phpunit/phpunit=4.8.*|5.7.*"
-    fi
-  - |
-    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      composer global require wp-coding-standards/wpcs
-      phpcs --config-set installed_paths $HOME/.composer/vendor/wp-coding-standards/wpcs
-    fi
+  - composer install
+  - curl -s -o $HOME/.nvm/nvm.sh https://raw.githubusercontent.com/creationix/nvm/v0.33.8/nvm.sh
+  - source $HOME/.nvm/nvm.sh
+  - nvm install v10.13.0
+  - node --version
+  - npm install && npm start
+  - bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
 
 script:
-  - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      phpunit
-    fi
-  - |
-    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
-      phpcs
-    fi
+  - composer test
 
-after_success: curl -L https://raw.githubusercontent.com/miya0001/travis2wpplugin/master/deploy.sh | bash
+after_success: curl -L https://raw.githubusercontent.com/miya0001/travis2wpplugin/master/deploy.sh
+  | bash
+
+before_deploy:
+  - bash bin/build.sh
+  - zip -r ../for-your-eyes-only.zip for-your-eyes-only
+  - mv ../for-your-eyes-only.zip ./
+  - export RELEASE_FILE=for-your-eyes-only.zip
+
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: rE1Z7Fr9PtImDCv5F6O5M7C3lq5sdoJvlk0O6x/uTkmcK6Z9VtOJ7sB7WGCpjVy9bUUFhyT6+0wz4Zyn/dJzXkMPVFr1QTXorPeW/F3NVkMkByYcEDflUq7SSr4wL6eo+PmUeE9YrcAwGFxHuJSOUR01OhtnhRFSBZHm2QIWEIv7S+ShHUM8keqebQiVFkfd9HVg4uZ8pQhDn+H29nm6ciW9dG0NziJ5ao35K+a84OSf6jkuAbrY1HM1PRlzxr62+aMVAjGkLQzoumHiMJqoofzTOU3gJTS9Z7+WCyAozdXhtC322hHVlqOpiRKidTLGM5l2sMlZCMWXv0ixWKZ/NbHfV+0JAVMQvTqkuPPdKFUvtiFxANDRry8PCp9lLZEhfZbco6rvKXupfUpD4lsrl4aZyU6NFJnbqVxQK1ikNBC1Xpi0l3QvaCKfJxDGCeq2GfQI36S/tdR5fxFERmjCR00b4/lHnp8VL1FV3f2jLfpV/nVu2MTH40YW+215QJTbRVVpfVy7bDm5EhQbc3WnWalufV6azjmXyH7hPL5LXYHcQKWCeLemNCmhMrmEYjg6ZWcfubMnQFQcewTgq00RShA4FsELnCjtj80r88FcEWp2btpFzbJSxcEsUs/WUF5Zi4h6rh4CQvJZ/KlP0yP9vq9Nprywp/jvPK7/uSouxh8=
+  file: "${RELEASE_FILE}"
+  on:
+    repo: hametuha/for-your-eyes-only
+    tags: true
+    php: 7.0
