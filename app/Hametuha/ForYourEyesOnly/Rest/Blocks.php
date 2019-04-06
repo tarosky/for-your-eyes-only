@@ -43,7 +43,7 @@ class Blocks extends RestApi {
 		// Check capability.
 		if ( 'publish' !== $post->post_status && ! current_user_can( 'edit_post', $post->ID ) ) {
 			if ( ! apply_filters( 'fyeo_can_display_non_public', false, $post ) ) {
-				throw new \Exception( __( 'You have no capabity', 'fyeo' ), 403 );
+				throw new \Exception( __( 'You have no capability.', 'fyeo' ), 403 );
 			}
 		}
 		// Change flag for parsing.

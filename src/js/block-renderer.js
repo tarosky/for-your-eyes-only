@@ -34,7 +34,7 @@ const convertBlock = ( id ) => {
     }
     $containers.addClass('fyeo-content-error').prepend( sprintf(
       '<p class="fyeo-content-error-string">%s</p>',
-      __( 'Failed authentication.', 'fyeo' )
+      __( 'Failed authentication', 'fyeo' )
     ) );
   }).finally(() => {
     $containers.removeClass('fyeo-content-loading');

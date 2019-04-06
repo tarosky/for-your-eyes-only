@@ -22,12 +22,17 @@ class ForYourEyesOnly extends Singleton {
 		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_style' ] );
 		// Register route.
 		Blocks::get_instance();
+		// Register command if exists.
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			\WP_CLI::add_command( ForYourEyesOnly\Commands\i18n::COMMAND_NAME, ForYourEyesOnly\Commands\i18n::class );
+		}
 	}
 
 	/**
 	 * Register all assets.
 	 */
 	public function register_assets() {
+		$locale = get_locale();
 		foreach ( [
 			[ 'js', 'block', [ 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components' ], true ],
 		    [ 'js', 'block-renderer', $this->add_plugin_deps( [ 'wp-i18n', 'jquery', 'wp-api-fetch' ] ), true ],
@@ -39,6 +44,10 @@ class ForYourEyesOnly extends Singleton {
 			switch ( $type ) {
 				case 'js':
 					wp_register_script( $handle, $url, $deps, $this->version, $footer );
+					$handle_file = sprintf( '%s/languages/fyeo-%s-%s.json', $this->dir, $locale, $handle );
+					if ( file_exists( $handle_file ) ) {
+						wp_set_script_translations( $handle, 'fyeo', $this->dir . '/languages' );
+					}
 					break;
 				case 'css':
 					wp_register_style( $handle, $url, $deps, $this->version );
@@ -52,6 +61,7 @@ class ForYourEyesOnly extends Singleton {
 		wp_localize_script( 'fyeo-block-renderer-js', 'FyeoBlockRenderer', [
 			'cookieTasting' => $this->cookie_tasting_exists(),
 		] );
+
 	}
 
 	/**

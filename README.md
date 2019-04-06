@@ -9,7 +9,7 @@ Requires PHP: 7.0.0
 License: GPLv3 or later  
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
-Restrict block for specified users.
+Add a restricted block for specified users.
 
 ## Description
 

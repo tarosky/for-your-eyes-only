@@ -14,7 +14,8 @@
   "scripts": {
     "start": "gulp build",
     "watch": "gulp watch",
-    "gulp": "gulp"
+    "gulp": "gulp",
+    "po": "po2json languages/fyeo-ja.po languages/fyeo-ja.json -f jed --pretty && wp fyeo-i18n ja"
   },
   "author": "Hametuha INC.",
   "license": "GPL-3.0",
@@ -44,6 +45,7 @@
     "gulp-wait": "0.0.2",
     "imagemin-pngquant": "^7.0.0",
     "merge-stream": "^1.0.1",
+    "po2json": "^1.0.0-alpha",
     "popper.js": "^1.14.4",
     "vinyl-named": "^1.1.0",
     "webpack": "^4.19.1",

@@ -7,6 +7,7 @@ Author: Hametuha INC.
 Author URI: https://hametuha.co.jp
 Version: 1.0.0
 Text Domain: fyeo
+Domain Path: /languages/
 */
 
 defined( 'ABSPATH' ) || die();
