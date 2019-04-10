@@ -5,7 +5,7 @@ Plugin URI: https://wordpress.org/plugins/for-your-eyes-only
 Description: A block restricted only for specified users.
 Author: Hametuha INC.
 Author URI: https://hametuha.co.jp
-Version: 1.0.0
+Version: 1.0.1
 Text Domain: fyeo
 Domain Path: /languages/
 */

@@ -39,8 +39,7 @@ before_script:
 script:
   - composer test
 
-after_success: curl -L https://raw.githubusercontent.com/miya0001/travis2wpplugin/master/deploy.sh
-  | bash
+after_success: curl -L https://raw.githubusercontent.com/miya0001/travis2wpplugin/master/deploy.sh | bash
 
 before_deploy:
   - bash bin/build.sh

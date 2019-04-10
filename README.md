@@ -4,7 +4,7 @@ Contributors: Takahashi_Fumiki, hametuha
 Tags: membership, login, restrict, gutenberg  
 Requires at least: 5.0.0  
 Tested up to: 5.1.1  
-Stable tag: 1.0.0  
+Stable tag: 1.0.1  
 Requires PHP: 7.0.0  
 License: GPLv3 or later  
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -46,5 +46,11 @@ We host our code on [Github](https://github.com/hametuha/for-your-eyes-only), so
 1. You get a new block to restrict non-members.
 
 ## Changelog
+
+### 1.0.1
+
+* Add auto deploy.
+
+### 1.0.0
 
 * First Release.
