@@ -70,7 +70,7 @@ class Parser extends Singleton {
 		}
 		static $count = 0;
 		$attributes   = shortcode_atts( [
-			'dynamic'    => '',
+			'dynamic'    => apply_filters( 'fyeo_default_render_style', '' ),
 			'tag_line'   => $this->tag_line(),
 			'capability' => $this->capability->default_capability(),
 		], $attributes, 'fyeo' );
