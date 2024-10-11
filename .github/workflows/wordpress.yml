@@ -72,6 +72,9 @@ jobs:
           version: ${{ github.ref }}
           files: readme.txt,for-your-eyes-only.php
 
+      - name: Install Subversion
+        run: sudo apt-get install subversion
+
       - name: Deploy to WordPress Directory
         id: deploy
         uses: 10up/action-wordpress-plugin-deploy@stable
