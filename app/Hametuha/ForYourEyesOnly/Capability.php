@@ -40,7 +40,7 @@ class Capability extends Pattern\Singleton {
 		$capability = $this->map_old_cap( $capability );
 		$user       = get_userdata( $user_id );
 		$has_cap    = $user && $user->has_cap( $capability );
-		return apply_filters( 'fyeo_user_has_cap', $has_cap, $user );
+		return apply_filters( 'fyeo_user_has_cap', $has_cap, $capability, $user );
 	}
 
 	/**
