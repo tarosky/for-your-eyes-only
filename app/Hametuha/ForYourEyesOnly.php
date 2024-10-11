@@ -59,6 +59,7 @@ class ForYourEyesOnly extends Singleton {
 		wp_localize_script( 'fyeo-block', 'FyeoBlockVars', [
 			'capabilities' => $this->capability->capabilities_list(),
 			'default'      => $this->capability->default_capability(),
+			'dynamic'      => apply_filters( 'fyeo_default_render_style', '' ),
 			'placeholder'  => $this->parser->tag_line(),
 		] );
 		wp_localize_script( 'fyeo-block-renderer', 'FyeoBlockRenderer', [
