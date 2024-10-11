@@ -37,15 +37,19 @@ class Capability extends Pattern\Singleton {
 		if ( is_null( $user_id ) ) {
 			$user_id = get_current_user_id();
 		}
-		if ( ! $user_id || ! ( $user = get_userdata( $user_id ) ) ) {
-			return false;
-		}
 		$capability = $this->map_old_cap( $capability );
-		if ( $user->has_cap( $capability ) ) {
-			return true;
-		} else {
-			return apply_filters( 'fyeo_user_has_cap', false, $user );
-		}
+		$user       = get_userdata( $user_id );
+		$has_cap    = $user && $user->has_cap( $capability );
+		return apply_filters( 'fyeo_user_has_cap', $has_cap, $user );
+	}
+
+	/**
+	 * Default capability for block.
+	 *
+	 * @return string
+	 */
+	public function default_capability() {
+		return (string) apply_filters( 'fyeo_default_capability', 'read' );
 	}
 
 	/**
@@ -59,7 +63,7 @@ class Capability extends Pattern\Singleton {
 			case 'reader':
 				return 'read';
 			case 'writer':
-				return 'edit_post';
+				return 'edit_posts';
 			default:
 				return $cap;
 		}

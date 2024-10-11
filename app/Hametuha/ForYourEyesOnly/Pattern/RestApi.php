@@ -40,16 +40,16 @@ abstract class RestApi extends Singleton {
 	public function register_rest_route() {
 		$arguments = [];
 		foreach ( [ 'GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS' ] as $http_method ) {
-			$argument = [];
+			$argument    = [];
 			$method_name = $this->get_method_name( $http_method );
 			if ( ! method_exists( $this, $method_name ) ) {
 				continue;
 			}
-			$params = $this->get_params( $http_method );
-			$argument = [
-				'methods'  => $http_method,
-				'args'     => $params,
-				'callback' => [ $this, 'callback' ],
+			$params      = $this->get_params( $http_method );
+			$argument    = [
+				'methods'             => $http_method,
+				'args'                => $params,
+				'callback'            => [ $this, 'callback' ],
 				'permission_callback' => [ $this, 'permission_callback' ],
 			];
 			$arguments[] = $argument;
@@ -95,11 +95,11 @@ abstract class RestApi extends Singleton {
 	/**
 	 * Validation for is_numeric
 	 *
-	 * @param mixed $var
+	 * @param mixed $value
 	 * @return bool
 	 */
-	public function is_numeric( $var ) {
-		return is_numeric( $var );
+	public function is_numeric( $value ) {
+		return is_numeric( $value );
 	}
 
 	/**

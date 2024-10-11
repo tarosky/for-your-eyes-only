@@ -21,10 +21,10 @@ class Parser extends Singleton {
 	/**
 	 * Set flag.
 	 *
-	 * @param bool $bool
+	 * @param bool $skip
 	 */
-	public function set_skip_frag( $bool ) {
-		$this->skip_flag = (bool) $bool;
+	public function set_skip_frag( $skip ) {
+		$this->skip_flag = (bool) $skip;
 	}
 
 	/**
@@ -36,13 +36,13 @@ class Parser extends Singleton {
 	 */
 	public function parse( $post = null, $user_id = null ) {
 		$blocks = [];
-		$post = get_post( $post );
+		$post   = get_post( $post );
 		setup_postdata( $post );
 		$post_content = sprintf( '<root>%s</root>', apply_filters( 'the_content', $post->post_content ) );
 		wp_reset_postdata();
 		// Parse dom content.
 		$html5 = new HTML5();
-		$dom = $html5->loadHTML( $post_content );
+		$dom   = $html5->loadHTML( $post_content );
 		$xpath = new \DOMXPath( $dom );
 		foreach ( $xpath->query( "//*[contains(@class, 'fyeo-content-valid')]" ) as $div ) {
 			/* @var \DOMElement $div */
@@ -69,22 +69,34 @@ class Parser extends Singleton {
 			return sprintf( "<div class=\"fyeo-content-valid\" data-capability=\"%s\">\n%s\n</div>", esc_attr( $attributes['capability'] ), $content );
 		}
 		static $count = 0;
-		$attributes = shortcode_atts( [
-			'tag_line' => $this->tag_line(),
-			'capability' => 'subscriber',
+		$attributes   = shortcode_atts( [
+			'dynamic'    => '',
+			'tag_line'   => $this->tag_line(),
+			'capability' => $this->capability->default_capability(),
 		], $attributes, 'fyeo' );
+		// Build tagline with URL.
 		if ( false !== strpos( $attributes['tag_line'], '%s' ) ) {
 			$attributes['tag_line'] = sprintf( $attributes['tag_line'], $this->login_url() );
 		}
-		if ( ! $count ) {
-			add_action( 'wp_footer', [ $this, 'enqueue_renderer' ], 1 );
+		++$count;
+		switch ( $attributes['dynamic'] ) {
+			case 'dynamic':
+				// This is dynamic rendering.
+				if ( $this->capability->has_capability( $attributes['capability'] ) ) {
+					return $content;
+				}
+				return sprintf(
+					"<div class=\"fyeo-content\">\n%s\n</div>",
+					wp_kses_post( wpautop( trim( $attributes['tag_line'] ) ) )
+				);
+			default:
+				// Async rendering.
+				return sprintf(
+					"<div data-post-id=\"%d\" class=\"fyeo-content\" style=\"position: relative;\">\n%s\n</div>",
+					get_the_ID(),
+					wp_kses_post( wpautop( trim( $attributes['tag_line'] ) ) )
+				);
 		}
-		$count++;
-		return sprintf(
-			"<div data-post-id=\"%d\" class=\"fyeo-content\" style=\"position: relative;\">\n%s\n</div>",
-			get_the_ID(),
-			wp_kses_post( wpautop( trim( $attributes['tag_line'] ) ) )
-		);
 	}
 
 	/**
@@ -93,6 +105,7 @@ class Parser extends Singleton {
 	 * @return string
 	 */
 	public function tag_line() {
+		// translators: %s is login URL.
 		return (string) apply_filters( 'fyeo_tag_line', __( 'To see this section, please <a href="%s" rel="nofollow">log in</a>.', 'fyeo' ) );
 	}
 
@@ -104,6 +117,15 @@ class Parser extends Singleton {
 	 */
 	private function get_redirect_to( $post = null ) {
 		$post = get_post( $post );
+
+		/**
+		 * fyeo_redirect_url
+		 *
+		 * Redirect URL to login.
+		 *
+		 * @param string   $permalink Default is post's permalink.
+		 * @param \WP_Post $post      Post object.
+		 */
 		return (string) apply_filters( 'fyeo_redirect_url', get_permalink( $post ), $post );
 	}
 
@@ -114,9 +136,23 @@ class Parser extends Singleton {
 	 * @return string
 	 */
 	private function login_url( $post = null ) {
-		$post = get_post( $post );
+		$post        = get_post( $post );
 		$redirect_to = $this->get_redirect_to( $post );
+		/**
+		 * fyeo_redirect_key
+		 *
+		 * Query parameter for Redirect URL.
+		 *
+		 * @param string $key Default is 'redirect_to'
+		 */
 		$key = apply_filters( 'fyeo_redirect_key', 'redirect_to' );
+		/**
+		 * fyeo_login_url
+		 *
+		 * Query parameter for Redirect URL.
+		 *
+		 * @param string $url Default is wp_login_url()
+		 */
 		$url = apply_filters( 'fyeo_login_url', wp_login_url() );
 		if ( $redirect_to ) {
 			$url = add_query_arg( [
@@ -125,12 +161,4 @@ class Parser extends Singleton {
 		}
 		return $url;
 	}
-
-	/**
-	 * Enqueue front end script.
-	 */
-	public function enqueue_renderer() {
-		wp_enqueue_script( 'fyeo-block-renderer-js' );
-	}
-
 }
