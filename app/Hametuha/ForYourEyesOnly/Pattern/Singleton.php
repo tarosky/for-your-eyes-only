@@ -97,7 +97,7 @@ abstract class Singleton {
 			case 'parser':
 				return Parser::get_instance();
 			case 'dir':
-				return dirname( dirname( dirname( dirname( __DIR__ ) ) ) );
+				return dirname( __DIR__, 4 );
 			case 'url':
 				return untrailingslashit( plugin_dir_url( $this->dir . '/assets' ) );
 			default:

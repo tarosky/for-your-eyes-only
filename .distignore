@@ -30,3 +30,5 @@ README.md
 *.tar.gz
 *.zip
 .lib
+for-your-eyes-only.php.bak
+readme.txt.bak

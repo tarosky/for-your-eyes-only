@@ -13,16 +13,22 @@ use Hametuha\ForYourEyesOnly\Pattern\RestApi;
  */
 class Blocks extends RestApi {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	protected function route() {
 		return 'blocks/(?P<post_id>\d+)';
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	protected function get_params( $http_method ) {
 		return [
 			'post_id' => [
-				'required'    => true,
-				'type'        => 'integer',
-				'description' => __( 'Post ID', 'fyeo' ),
+				'required'          => true,
+				'type'              => 'integer',
+				'description'       => __( 'Post ID', 'fyeo' ),
 				'validate_callback' => [ $this, 'is_numeric' ],
 			],
 		];
@@ -32,7 +38,7 @@ class Blocks extends RestApi {
 	 * Handle GET request.
 	 *
 	 * @param \WP_REST_Request $request
-	 * @throws Exception
+	 * @throws \Exception
 	 * @return array
 	 */
 	protected function handle_get( \WP_REST_Request $request ) {

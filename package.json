@@ -1,54 +1,97 @@
 {
-  "name": "for-your-eyes-only",
-  "version": "1.0.0",
-  "homepage": "https://github.com/hametuha/for-your-eyes-only",
-  "description": "A block restricted for specified users.",
-  "main": "gulpfile.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/hametuha/for-your-eyes-only.git"
-  },
-  "bugs": {
-    "url": "https://github.com/hametuha/for-your-eyes-only/issues"
-  },
-  "scripts": {
-    "start": "gulp build",
-    "watch": "gulp watch",
-    "gulp": "gulp",
-    "po": "po2json languages/fyeo-ja.po languages/fyeo-ja.json -f jed --pretty && wp fyeo-i18n ja"
-  },
-  "author": "Hametuha INC.",
-  "license": "GPL-3.0",
-  "devDependencies": {
-    "@babel/core": "^7.1.0",
-    "@babel/plugin-transform-react-jsx": "^7.0.0",
-    "@babel/preset-env": "^7.1.0",
-    "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.0.5",
-    "bootstrap": "^4.1.3",
-    "chart.js": "^2.7.1",
-    "eslint": "^5.4.0",
-    "eslint-plugin-wordpress": "^0.1.0",
-    "gulp": "^4.0.0",
-    "gulp-autoprefixer": "^6.0.0",
-    "gulp-eslint": "^5.0.0",
-    "gulp-imagemin": "^5.0.3",
-    "gulp-load-plugins": "^1.2",
-    "gulp-notify": "^3.2.0",
-    "gulp-plumber": "^1.0.0",
-    "gulp-rename": "^1.4.0",
-    "gulp-sass": "^4.0",
-    "gulp-sass-glob": "^1.0.9",
-    "gulp-sourcemaps": "^2.6",
-    "gulp-uglify": "^3.0",
-    "gulp-util": "^3.0",
-    "gulp-wait": "0.0.2",
-    "imagemin-pngquant": "^7.0.0",
-    "merge-stream": "^1.0.1",
-    "po2json": "^1.0.0-alpha",
-    "popper.js": "^1.14.4",
-    "vinyl-named": "^1.1.0",
-    "webpack": "^4.19.1",
-    "webpack-stream": "^5.1.1"
-  }
+	"name": "for-your-eyes-only",
+	"version": "1.0.0",
+	"homepage": "https://github.com/tarosky/for-your-eyes-only",
+	"description": "A block restricted for specified users.",
+	"main": "gulpfile.js",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/tarosky/for-your-eyes-only.git"
+	},
+	"bugs": {
+		"url": "https://github.com/tarosky/for-your-eyes-only/issues"
+	},
+	"scripts": {
+		"start": "wp-env start",
+		"update": "wp-env start --update",
+		"stop": "wp-env stop",
+		"cli": "wp-env run cli wp",
+		"cli:test": "wp-env run tests-cli wp",
+		"env": "wp-env",
+		"test": "RESULT=${PWD##*/} && wp-env run tests-cli ./wp-content/plugins/$RESULT/vendor/bin/phpunit -c ./wp-content/plugins/$RESULT/phpunit.xml.dist",
+		"imagemin": "imagemin src/img/* --out-dir=assets/img --plugin.pngquant.quality={0.65,0.8} --plugin.jpegtran --plugin.gifsicle",
+		"lint:css": "wp-scripts lint-style './src/scss/**/*.scss'",
+		"lint:js": "wp-scripts lint-js './src/js/**/*.js'",
+		"fix:css": "stylelint --fix ./src/scss",
+		"fix:js": "wp-scripts format './src/js/**/*.js'",
+		"build:css": "sass ./src/scss/:./assets/css/ --style=compressed && postcss ./assets/css/**/*.css --replace --autoprefixer",
+		"build:js": "wp-scripts build ./src/js/block.js ./src/js/block-renderer.js --output-path=assets/js && npm run clean:js && npm run extract:js",
+		"clean:js": "find assets/js -type f -name '*.php' -delete",
+		"extract:js": "node bin/compiler.js license",
+		"dump": "node bin/compiler.js dump",
+		"build": "npm run build:css && npm run build:js && npm run imagemin && npm run dump",
+		"lint": "npm run lint:css && npm run lint:js",
+		"watch": "npm-watch"
+	},
+	"author": "Tarosky INC.",
+	"license": "GPL-3.0",
+	"volta": {
+		"node": "18.20.4"
+	},
+	"devDependencies": {
+		"@kunoichi/grab-deps": "^1.3.1",
+		"@wordpress/env": "^9.0.0",
+		"@wordpress/eslint-plugin": "^21.2.0",
+		"@wordpress/scripts": "^23.7.2",
+		"glob": "^11.0.0",
+		"imagemin": "^9.0.0",
+		"imagemin-cli": "^8.0.0",
+		"imagemin-gifsicle": "^7.0.0",
+		"imagemin-jpegtran": "^7.0.0",
+		"imagemin-pngquant": "^10.0.0",
+		"imagemin-svgo": "^11.0.1",
+		"npm-watch": "^0.13.0",
+		"postcss-cli": "^11.0.0",
+		"sass": "^1.79.4"
+	},
+	"watch": {
+		"build:css": {
+			"extensions": "scss",
+			"patterns": [
+				"src/scss"
+			]
+		},
+		"build:js": {
+			"extensions": "js",
+			"patterns": [
+				"src/js"
+			]
+		},
+		"dump": {
+			"extensions": "js,txt,css",
+			"patterns": [
+				"assets/js",
+				"assets/css"
+			],
+			"delay": 500
+		},
+		"imagemin": {
+			"extensions": "jpg,jpeg,gif,png,svg",
+			"patterns": [
+				"src/img"
+			]
+		},
+		"lint:css": {
+			"extensions": "scss",
+			"patterns": [
+				"src/scss"
+			]
+		},
+		"lint:js": {
+			"extensions": "js",
+			"patterns": [
+				"src"
+			]
+		}
+	}
 }

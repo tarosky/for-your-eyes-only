@@ -1,11 +1,11 @@
 # For Your Eyes Only
 
-Contributors: Takahashi_Fumiki, hametuha  
+Contributors: tarosky, Takahashi_Fumiki, hametuha  
 Tags: membership, login, restrict, gutenberg  
-Requires at least: 5.0.0  
-Tested up to: 5.1.1  
-Stable tag: 1.0.1  
-Requires PHP: 7.0.0  
+Requires at least: 6.1  
+Tested up to: 6.6  
+Stable tag: nightly  
+Requires PHP: 7.2  
 License: GPLv3 or later  
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
@@ -14,14 +14,14 @@ Add a restricted block for specified users.
 ## Description
 
 This plugin adds a block to your block editor.
-This block change it's display depending on a current user's capability.
+This block changes its display depending on a current user's capability.
 
 * You can set capability for block.
 * If a current user has a capability for the block, its content will be replaced.
 * Or else, block is displayed as log in link.
 * This block is an inner block, so you can nest any blocks inside it. Convert it to a reusable block for your productivity.
 
-See screen shot for how block will be displayed.
+See screenshot for how block will be displayed.
 
 This plugin use REST API to convert block content, so you can use it with cached WordPress.
 Even if you use CDN like [CloudFront](https://aws.amazon.com/cloudfront/) or [Cloudflare](https://www.cloudflare.com/), this plugin displays proper contents for each users.
@@ -39,13 +39,18 @@ It decrease server access including REST API by checking COOKIE value before acc
 
 ### How to Contribute
 
-We host our code on [Github](https://github.com/hametuha/for-your-eyes-only), so feel free to send PR or issues.
+We host our code on [Github](https://github.com/tarosky/for-your-eyes-only), so feel free to send PR or issues.
 
 ## Screenshots
 
 1. You get a new block to restrict non-members.
 
 ## Changelog
+
+### 1.1.0
+
+* Ownership is now changed. Thanks to @hametuha for taking over this plugin.
+* Add dynamic mode. This works as PHP rendering.
 
 ### 1.0.1
 

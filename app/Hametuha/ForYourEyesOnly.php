@@ -18,14 +18,9 @@ class ForYourEyesOnly extends Singleton {
 	 */
 	protected function init() {
 		add_action( 'init', [ $this, 'register_assets' ] );
-		add_action( 'init',[ $this, 'register_block_types' ], 11 );
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_style' ] );
+		add_action( 'init', [ $this, 'register_block_types' ], 11 );
 		// Register route.
 		Blocks::get_instance();
-		// Register command if exists.
-		if ( defined( 'WP_CLI' ) && WP_CLI ) {
-			\WP_CLI::add_command( ForYourEyesOnly\Commands\i18n::COMMAND_NAME, ForYourEyesOnly\Commands\i18n::class );
-		}
 	}
 
 	/**
@@ -33,35 +28,42 @@ class ForYourEyesOnly extends Singleton {
 	 */
 	public function register_assets() {
 		$locale = get_locale();
-		foreach ( [
-			[ 'js', 'block', [ 'wp-blocks', 'wp-i18n', 'wp-editor', 'wp-components' ], true ],
-		    [ 'js', 'block-renderer', $this->add_plugin_deps( [ 'wp-i18n', 'jquery', 'wp-api-fetch' ] ), true ],
-			[ 'css', 'block', [ 'dashicons' ], true ],
-			[ 'css', 'theme', [], true ],
-	  	] as list ( $type, $name, $deps, $footer ) ) {
-			$handle = implode( '-', [ 'fyeo', $name, $type ] );
-			$url = $this->url . "/assets/{$type}/{$name}.{$type}";
-			switch ( $type ) {
+		$json   = $this->dir . '/wp-dependencies.json';
+		if ( ! file_exists( $json ) ) {
+			return;
+		}
+		$deps = json_decode( file_get_contents( $json ), true );
+		if ( ! $deps ) {
+			return;
+		}
+		foreach ( $deps as $dep ) {
+			if ( empty( $dep['handle'] ) ) {
+				continue;
+			}
+			$url = $this->url . '/' . $dep['path'];
+			switch ( $dep['ext'] ) {
 				case 'js':
-					wp_register_script( $handle, $url, $deps, $this->version, $footer );
-					$handle_file = sprintf( '%s/languages/fyeo-%s-%s.json', $this->dir, $locale, $handle );
-					if ( file_exists( $handle_file ) ) {
-						wp_set_script_translations( $handle, 'fyeo', $this->dir . '/languages' );
+					wp_register_script( $dep['handle'], $url, $dep['deps'], $dep['hash'], [
+						'in_footer' => $dep['footer'],
+						'strategy'  => 'defer',
+					] );
+					if ( in_array( 'wp-i18n', $dep['deps'], true ) ) {
+						wp_set_script_translations( $dep['handle'], 'fyeo', $this->dir . '/languages' );
 					}
 					break;
 				case 'css':
-					wp_register_style( $handle, $url, $deps, $this->version );
+					wp_register_style( $dep['handle'], $url, $dep['deps'], $dep['hash'], 'screen' );
 					break;
 			}
 		}
-		wp_localize_script( 'fyeo-block-js', 'FyeoBlockVars', [
-			'capabilities'  => $this->capability->capabilities_list(),
-			'placeholder'   => $this->parser->tag_line(),
+		wp_localize_script( 'fyeo-block', 'FyeoBlockVars', [
+			'capabilities' => $this->capability->capabilities_list(),
+			'default'      => $this->capability->default_capability(),
+			'placeholder'  => $this->parser->tag_line(),
 		] );
-		wp_localize_script( 'fyeo-block-renderer-js', 'FyeoBlockRenderer', [
+		wp_localize_script( 'fyeo-block-renderer', 'FyeoBlockRenderer', [
 			'cookieTasting' => $this->cookie_tasting_exists(),
 		] );
-
 	}
 
 	/**
@@ -71,19 +73,16 @@ class ForYourEyesOnly extends Singleton {
 		if ( ! function_exists( 'register_block_type' ) ) {
 			return;
 		}
-		register_block_type( 'fyeo/block', [
-			'editor_script' => 'fyeo-block-js',
-			'editor_style'  => 'fyeo-block-css',
-			'render_callback' => [ $this->parser, 'render' ],
-		] );
-	}
-
-	/**
-	 * Enqueue front end style.
-	 */
-	public function enqueue_style() {
+		$view_styles = [];
 		if ( apply_filters( 'fyeo_enqueue_style', true ) ) {
-			wp_enqueue_style( 'fyeo-theme-css' );
+			$view_styles[] = 'fyeo-theme';
 		}
+		register_block_type( 'fyeo/block', [
+			'editor_script_handles' => [ 'fyeo-block' ],
+			'view_script_handles'   => [ 'fyeo-block-renderer' ],
+			'editor_style_handles'  => [ 'fyeo-block' ],
+			'view_style_handles'    => $view_styles,
+			'render_callback'       => [ $this->parser, 'render' ],
+		] );
 	}
 }
