@@ -20,7 +20,7 @@ phpunit.xml.dist
 multisite.xml
 multisite.xml.dist
 phpcs.xml
-phpcs.xml.dist
+phpcs.ruleset.xml
 wp-cli.local.yml
 yarn.lock
 tests

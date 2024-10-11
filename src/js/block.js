@@ -55,7 +55,7 @@ registerBlockType( 'fyeo/block', {
 		},
 		dynamic: {
 			type: 'string',
-			default: '',
+			default: FyeoBlockVars.dynamic,
 		},
 	},
 
