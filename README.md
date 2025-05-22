@@ -2,10 +2,8 @@
 
 Contributors: tarosky, Takahashi_Fumiki, hametuha  
 Tags: membership, login, restrict, gutenberg  
-Requires at least: 6.1  
-Tested up to: 6.6  
+Tested up to: 6.8  
 Stable tag: nightly  
-Requires PHP: 7.2  
 License: GPLv3 or later  
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
