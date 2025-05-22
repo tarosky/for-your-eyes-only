@@ -6,6 +6,8 @@ Description: A block restricted only for specified users.
 Author: Tarosky INC.
 Author URI: https://tarosky.co.jp
 Version: nightly
+Requires at least: 6.1
+Requires PHP: 7.2
 Text Domain: fyeo
 Domain Path: /languages/
 */
