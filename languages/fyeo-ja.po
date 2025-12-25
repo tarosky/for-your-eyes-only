@@ -34,7 +34,8 @@ msgstr "編集者"
 msgid "Administrator"
 msgstr "管理者"
 
-#: app/Hametuha/ForYourEyesOnly/Parser.php:96
+#. translators: %s is login URL.
+#: app/Hametuha/ForYourEyesOnly/Parser.php:110
 #, php-format
 msgid "To see this section, please <a href=\"%s\" rel=\"nofollow\">log in</a>."
 msgstr "このセクションを表示するには、<a href=\"%s\" rel=\"nofollow\">ログイン</a>してください。"
@@ -43,30 +44,125 @@ msgstr "このセクションを表示するには、<a href=\"%s\" rel=\"nofoll
 msgid "Invalid request. The specified endpoint does not exist."
 msgstr "無効なリクエストです。指定されたエンドポイントは存在しません。"
 
-#: app/Hametuha/ForYourEyesOnly/Rest/Blocks.php:25
+#: app/Hametuha/ForYourEyesOnly/Rest/Blocks.php:31
 msgid "Post ID"
 msgstr "投稿ID"
 
-#: app/Hametuha/ForYourEyesOnly/Rest/Blocks.php:41
+#: app/Hametuha/ForYourEyesOnly/Rest/Blocks.php:47
 msgid "Post not found."
 msgstr "投稿が見つかりませんでした。"
 
-#: app/Hametuha/ForYourEyesOnly/Rest/Blocks.php:46
+#: app/Hametuha/ForYourEyesOnly/Rest/Blocks.php:52
 msgid "You have no capability."
 msgstr "権限がありません。"
 
-#. Plugin URI of the plugin/theme
+#. Plugin URI of the plugin
+#: for-your-eyes-only.php
 msgid "https://wordpress.org/plugins/for-your-eyes-only"
 msgstr "https://ja.wordpress.org/plugins/for-your-eyes-only"
 
-#. Description of the plugin/theme
+#. Description of the plugin
+#: for-your-eyes-only.php
 msgid "A block restricted only for specified users."
 msgstr "指定されたユーザーにだけ制限されたブロック。"
 
-#. Author of the plugin/theme
-msgid "Hametuha INC."
-msgstr "株式会社破滅派"
+#. Plugin Name of the plugin
+#: for-your-eyes-only.php
+msgid "For Your Eyes Only"
+msgstr ""
 
-#. Author URI of the plugin/theme
-msgid "https://hametuha.co.jp"
-msgstr "https://hametuha.co.jp"
+#. Author of the plugin
+#: for-your-eyes-only.php
+msgid "Tarosky INC."
+msgstr ""
+
+#. Author URI of the plugin
+#: for-your-eyes-only.php
+msgid "https://tarosky.co.jp"
+msgstr ""
+
+#: build/blocks/restricted-block/index.js:1
+#: src/blocks/restricted-block/index.js:27
+msgid "(Default)"
+msgstr "（デフォルト）"
+
+#: build/blocks/restricted-block/index.js:1
+#: src/blocks/restricted-block/index.js:56
+msgid "Visibility Setting"
+msgstr "表示設定"
+
+#: build/blocks/restricted-block/index.js:1
+#: src/blocks/restricted-block/index.js:61
+msgid "Capability"
+msgstr "権限"
+
+#: build/blocks/restricted-block/index.js:1
+#: src/blocks/restricted-block/index.js:67
+msgid "This block will be displayed only for users specified above."
+msgstr "このブロックは上で指定されたユーザーにだけ表示されます。"
+
+#: build/blocks/restricted-block/index.js:1
+#: src/blocks/restricted-block/index.js:71
+msgid "Rendering Style"
+msgstr "レンダリング方式"
+
+#: build/blocks/restricted-block/index.js:1
+#: src/blocks/restricted-block/index.js:75
+msgid "Asynchronous(JavaScript + REST API)"
+msgstr "非同期（JavaScript + REST API）"
+
+#: build/blocks/restricted-block/index.js:1
+#: src/blocks/restricted-block/index.js:79
+msgid "Dynamic(PHP)"
+msgstr "動的（PHP）"
+
+#: build/blocks/restricted-block/index.js:1
+#: src/blocks/restricted-block/index.js:86
+msgid "If WordPress is under cache, Asynchronous is recommended."
+msgstr "WordPressがキャッシュ下にある場合は、非同期が推奨されます。"
+
+#: build/blocks/restricted-block/index.js:1
+#: src/blocks/restricted-block/index.js:90
+msgid "Tagline"
+msgstr "タグライン"
+
+#: build/blocks/restricted-block/index.js:1
+#: src/blocks/restricted-block/index.js:95
+#, js-format
+msgid "This instruction will be displayed to users who have no capability. %s will be replaced with login URL."
+msgstr "この説明文は権限を持たないユーザーに表示されます。%s はログインURLに置き換えられます。"
+
+#: build/blocks/restricted-block/view.js:1
+#: src/blocks/restricted-block/view.js:48
+msgid "Failed authentication"
+msgstr "認証失敗"
+
+#: build/blocks/restricted-block/block.json
+#: src/blocks/restricted-block/block.json
+msgctxt "block title"
+msgid "Restricted Block"
+msgstr "制限ブロック"
+
+#: build/blocks/restricted-block/block.json
+#: src/blocks/restricted-block/block.json
+msgctxt "block description"
+msgid "This block will be displayed only for specified users."
+msgstr "このブロックは指定されたユーザーだけに表示されます。"
+
+#: build/blocks/restricted-block/block.json
+#: src/blocks/restricted-block/block.json
+msgctxt "block keyword"
+msgid "restricted"
+msgstr "制限"
+
+#: build/blocks/restricted-block/block.json
+#: src/blocks/restricted-block/block.json
+msgctxt "block keyword"
+msgid "for your eyes only"
+msgstr "限定公開"
+
+#: build/blocks/restricted-block/block.json
+#: src/blocks/restricted-block/block.json
+msgctxt "block keyword"
+msgid "private"
+msgstr "プライベート"
