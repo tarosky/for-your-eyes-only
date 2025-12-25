@@ -26,7 +26,8 @@
 		"watch:blocks": "wp-scripts start --source-path=src/blocks --output-path=build/blocks",
 		"lint": "npm run lint:js && npm run lint:css",
 		"lint:css": "wp-scripts lint-style './src/blocks/**/*.scss' './src/scss/**/*.scss'",
-		"lint:js": "wp-scripts lint-js './src/blocks/**/*.js'"
+		"lint:js": "wp-scripts lint-js './src/blocks/**/*.js'",
+		"prepare": "husky"
 	},
 	"author": "Tarosky INC.",
 	"license": "GPL-3.0-or-later",
@@ -38,10 +39,17 @@
 		"@wordpress/env": "^10.35.0",
 		"@wordpress/scripts": "^31.0.0",
 		"autoprefixer": "^10.4.23",
+		"husky": "^9.1.7",
+		"lint-staged": "^16.2.7",
 		"npm-watch": "^0.13.0",
 		"postcss": "^8.5.6",
 		"postcss-cli": "^11.0.1",
 		"sass": "^1.97.1"
+	},
+	"lint-staged": {
+		"*.js": "npm run lint:js",
+		"*.scss": "npm run lint:css",
+		"*.php": "composer lint"
 	},
 	"watch": {
 		"dump": {
