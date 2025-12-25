@@ -1,5 +1,5 @@
 /vendor/
-/assets/
+/build/
 /node_modules/
 composer.lock
 /wordpress/

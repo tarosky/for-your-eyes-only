@@ -66,7 +66,8 @@ class Parser extends Singleton {
 	public function render( $attributes = [], $content = '' ) {
 		// If flag is on, returns full content.
 		if ( $this->skip_flag ) {
-			return sprintf( "<div class=\"fyeo-content-valid\" data-capability=\"%s\">\n%s\n</div>", esc_attr( $attributes['capability'] ), $content );
+			$capability = ! empty( $attributes['capability'] ) ? $attributes['capability'] : $this->capability->default_capability();
+			return sprintf( "<div class=\"fyeo-content-valid\" data-capability=\"%s\">\n%s\n</div>", esc_attr( $capability ), $content );
 		}
 		static $count = 0;
 		$attributes   = shortcode_atts( [

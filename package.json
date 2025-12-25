@@ -3,7 +3,6 @@
 	"version": "1.0.0",
 	"homepage": "https://github.com/tarosky/for-your-eyes-only",
 	"description": "A block restricted for specified users.",
-	"main": "gulpfile.js",
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/tarosky/for-your-eyes-only.git"
@@ -19,78 +18,48 @@
 		"cli:test": "wp-env run tests-cli wp",
 		"env": "wp-env",
 		"test": "RESULT=${PWD##*/} && wp-env run tests-cli ./wp-content/plugins/$RESULT/vendor/bin/phpunit -c ./wp-content/plugins/$RESULT/phpunit.xml.dist",
-		"imagemin": "imagemin src/img/* --out-dir=assets/img --plugin.pngquant.quality={0.65,0.8} --plugin.jpegtran --plugin.gifsicle",
-		"lint:css": "wp-scripts lint-style './src/scss/**/*.scss'",
-		"lint:js": "wp-scripts lint-js './src/js/**/*.js'",
-		"fix:css": "stylelint --fix ./src/scss",
-		"fix:js": "wp-scripts format './src/js/**/*.js'",
-		"build:css": "sass ./src/scss/:./assets/css/ --style=compressed && postcss ./assets/css/**/*.css --replace --autoprefixer",
-		"build:js": "wp-scripts build ./src/js/block.js ./src/js/block-renderer.js --output-path=assets/js && npm run clean:js && npm run extract:js",
-		"clean:js": "find assets/js -type f -name '*.php' -delete",
-		"extract:js": "node bin/compiler.js license",
-		"dump": "node bin/compiler.js dump",
-		"build": "npm run build:css && npm run build:js && npm run imagemin && npm run dump",
-		"lint": "npm run lint:css && npm run lint:js",
-		"watch": "npm-watch"
+		"build": "npm run build:css && npm run build:blocks && npm run dump",
+		"build:css": "sass ./src/scss/:./build/css/ --style=compressed && postcss ./build/css/**/*.css --replace && cp -r ./src/img ./build/",
+		"build:blocks": "wp-scripts build --source-path=src/blocks --output-path=build/blocks",
+		"dump": "grab-deps dump build/css wp-dependencies.json",
+		"watch": "npm-watch",
+		"watch:blocks": "wp-scripts start --source-path=src/blocks --output-path=build/blocks",
+		"lint": "npm run lint:js && npm run lint:css",
+		"lint:css": "wp-scripts lint-style './src/blocks/**/*.scss' './src/scss/**/*.scss'",
+		"lint:js": "wp-scripts lint-js './src/blocks/**/*.js'"
 	},
 	"author": "Tarosky INC.",
-	"license": "GPL-3.0",
+	"license": "GPL-3.0-or-later",
 	"volta": {
-		"node": "18.20.4"
+		"node": "22.21.1"
 	},
 	"devDependencies": {
-		"@kunoichi/grab-deps": "^1.3.1",
-		"@wordpress/env": "^9.0.0",
-		"@wordpress/eslint-plugin": "^21.2.0",
-		"@wordpress/scripts": "^23.7.2",
-		"glob": "^11.0.0",
-		"imagemin": "^9.0.0",
-		"imagemin-cli": "^8.0.0",
-		"imagemin-gifsicle": "^7.0.0",
-		"imagemin-jpegtran": "^7.0.0",
-		"imagemin-pngquant": "^10.0.0",
-		"imagemin-svgo": "^11.0.1",
+		"@kunoichi/grab-deps": "^3.1.4",
+		"@wordpress/env": "^10.35.0",
+		"@wordpress/scripts": "^31.0.0",
+		"autoprefixer": "^10.4.23",
 		"npm-watch": "^0.13.0",
-		"postcss-cli": "^11.0.0",
-		"sass": "^1.79.4"
+		"postcss": "^8.5.6",
+		"postcss-cli": "^11.0.1",
+		"sass": "^1.97.1"
 	},
 	"watch": {
+		"dump": {
+			"extensions": "css",
+			"patterns": [
+				"build/css"
+			]
+		},
+		"build:blocks": {
+			"extensions": "js,scss,php,json",
+			"patterns": [
+				"src/blocks"
+			]
+		},
 		"build:css": {
 			"extensions": "scss",
 			"patterns": [
 				"src/scss"
-			]
-		},
-		"build:js": {
-			"extensions": "js",
-			"patterns": [
-				"src/js"
-			]
-		},
-		"dump": {
-			"extensions": "js,txt,css",
-			"patterns": [
-				"assets/js",
-				"assets/css"
-			],
-			"delay": 500
-		},
-		"imagemin": {
-			"extensions": "jpg,jpeg,gif,png,svg",
-			"patterns": [
-				"src/img"
-			]
-		},
-		"lint:css": {
-			"extensions": "scss",
-			"patterns": [
-				"src/scss"
-			]
-		},
-		"lint:js": {
-			"extensions": "js",
-			"patterns": [
-				"src"
 			]
 		}
 	}

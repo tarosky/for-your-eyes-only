@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "fyeo/block",
+	"version": "1.0.0",
+	"title": "Restricted Block",
+	"category": "common",
+	"icon": "hidden",
+	"description": "This block will be displayed only for specified users.",
+	"keywords": [ "restricted", "for your eyes only", "private" ],
+	"textdomain": "fyeo",
+	"attributes": {
+		"tag_line": {
+			"type": "string",
+			"default": ""
+		},
+		"capability": {
+			"type": "string",
+			"default": ""
+		},
+		"dynamic": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"supports": {
+		"html": false
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"viewScript": [ "jquery", "file:./view.js" ],
+	"render": "file:./render.php"
+}
