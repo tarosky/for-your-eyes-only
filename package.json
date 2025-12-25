@@ -18,6 +18,7 @@
 		"cli:test": "wp-env run tests-cli wp",
 		"env": "wp-env",
 		"test": "RESULT=${PWD##*/} && wp-env run tests-cli ./wp-content/plugins/$RESULT/vendor/bin/phpunit -c ./wp-content/plugins/$RESULT/phpunit.xml.dist",
+		"check": "wp-env run cli wp plugin check for-your-eyes-only --exclude-directories=wordpress,node_modules,tests,bin,.husky,vendor --ignore-codes=WordPress.WP.I18n.TextDomainMismatch",
 		"build": "npm run build:css && npm run build:blocks && npm run dump",
 		"build:css": "sass ./src/scss/:./build/css/ --style=compressed && postcss ./build/css/**/*.css --replace && cp -r ./src/img ./build/",
 		"build:blocks": "wp-scripts build --source-path=src/blocks --output-path=build/blocks",

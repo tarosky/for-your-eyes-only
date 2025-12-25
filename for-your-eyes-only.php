@@ -9,6 +9,7 @@ Version: nightly
 Requires at least: 6.6
 Requires PHP: 7.4
 Text Domain: fyeo
+License: GPL 3.0 or later
 Domain Path: /languages/
 */
 
