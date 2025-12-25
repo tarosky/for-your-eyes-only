@@ -70,6 +70,11 @@ We host our code on [Github](https://github.com/tarosky/for-your-eyes-only), so 
 
 ## Changelog
 
+### 1.2.1
+
+* Bump PHP and WordPress requirements.
+* Arranged tranpilation structure.
+
 ### 1.1.0
 
 * Ownership is now changed. Thanks to @hametuha for taking over this plugin.
