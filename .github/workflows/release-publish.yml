@@ -33,10 +33,10 @@ jobs:
         run: |
           VERSION=${{ steps.extract_version.outputs.version }}
           # Check if tag already exists
-          if git rev-parse "v${VERSION}" >/dev/null 2>&1; then
-            echo "Tag v${VERSION} already exists"
+          if git rev-parse "${VERSION}" >/dev/null 2>&1; then
+            echo "Tag ${VERSION} already exists"
           else
-            git tag "v${VERSION}"
-            git push origin "v${VERSION}"
-            echo "Created and pushed tag v${VERSION}"
+            git tag "${VERSION}"
+            git push origin "${VERSION}"
+            echo "Created and pushed tag ${VERSION}"
           fi

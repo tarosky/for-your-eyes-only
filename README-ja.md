@@ -70,6 +70,11 @@ License URI: http://www.gnu.org/licenses/gpl-3.0.txt
 
 ## 変更履歴
 
+### 1.2.1
+
+* PHPとWordPressの要件を引き上げました。
+* トランスパイル構成を整理しました。
+
 ### 1.1.0
 
 * 所有権が変更されました。このプラグインを引き継いでくださった @hametuha に感謝します。
