@@ -72,12 +72,20 @@ class Parser extends Singleton {
 		static $count = 0;
 		$attributes   = shortcode_atts( [
 			'dynamic'    => apply_filters( 'fyeo_default_render_style', '' ),
-			'tag_line'   => $this->tag_line(),
-			'capability' => $this->capability->default_capability(),
+			'tag_line'   => '',
+			'capability' => '',
 		], $attributes, 'fyeo' );
+		// Apply default tag_line if empty.
+		if ( empty( $attributes['tag_line'] ) ) {
+			$attributes['tag_line'] = $this->tag_line();
+		}
 		// Build tagline with URL.
 		if ( false !== strpos( $attributes['tag_line'], '%s' ) ) {
 			$attributes['tag_line'] = sprintf( $attributes['tag_line'], $this->login_url() );
+		}
+		// If capability is empty, apply default.
+		if ( empty( $attributes['capability'] ) ) {
+			$attributes['capability'] = $this->capability->default_capability();
 		}
 		++$count;
 		switch ( $attributes['dynamic'] ) {
