@@ -10,12 +10,12 @@ jobs:
     name: PHP Syntax Check
     uses: tarosky/workflows/.github/workflows/phpcs.yml@main
     with:
-      version: 7.2
+      version: 7.4
 
   assets:
     uses: tarosky/workflows/.github/workflows/npm.yml@main
     with:
-      node_version: 18
+      node_version: 22
       command: lint
       package: build
 
