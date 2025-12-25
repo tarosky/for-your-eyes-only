@@ -5,6 +5,7 @@
 .gitlab-ci.yml
 .travis.yml
 .DS_Store
+.claude
 Thumbs.db
 behat.yml
 bin
@@ -26,6 +27,7 @@ yarn.lock
 tests
 node_modules
 README.md
+Agents.md
 *.sql
 *.tar.gz
 *.zip

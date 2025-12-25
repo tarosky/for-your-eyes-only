@@ -22,13 +22,16 @@ jobs:
       - name: Setup PHP with composer
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.2
-          tools: composer
+          php-version: 7.4
+          tools: composer,wp-cli
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Plugin
         run: bash bin/build.sh ${{ github.ref }}
+
+      - name: Compile Translations
+        run: composer i18n
 
       - name: Generate readme.txt
         uses: tarosky/workflows/actions/wp-readme@main

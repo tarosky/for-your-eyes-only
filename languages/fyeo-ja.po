@@ -69,17 +69,17 @@ msgstr "指定されたユーザーにだけ制限されたブロック。"
 #. Plugin Name of the plugin
 #: for-your-eyes-only.php
 msgid "For Your Eyes Only"
-msgstr ""
+msgstr "For Your Eyes Only"
 
 #. Author of the plugin
 #: for-your-eyes-only.php
 msgid "Tarosky INC."
-msgstr ""
+msgstr "株式会社タロスカイ"
 
 #. Author URI of the plugin
 #: for-your-eyes-only.php
 msgid "https://tarosky.co.jp"
-msgstr ""
+msgstr "https://tarosky.co.jp"
 
 #: build/blocks/restricted-block/index.js:1
 #: src/blocks/restricted-block/index.js:27
