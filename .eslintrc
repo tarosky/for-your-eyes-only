@@ -6,11 +6,14 @@
 	"globals": {
 		"wp": true,
 		"jQuery": true,
-		"CookieTasting": false
+		"CookieTasting": "readonly",
+		"FyeoBlockVars": "readonly",
+		"FyeoBlockRenderer": "readonly"
 	},
 	"extends": [ "plugin:@wordpress/eslint-plugin/recommended-with-formatting" ],
 	"rules": {
 		"@wordpress/i18n-translator-comments": "off",
-		"jsdoc/check-tag-names": "off"
+		"jsdoc/check-tag-names": "off",
+		"import/no-unresolved": [ "error", { "ignore": [ "^@wordpress/" ] } ]
 	}
 }

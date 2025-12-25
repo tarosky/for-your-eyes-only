@@ -1,18 +1,21 @@
-/*!
- * Description
+/**
+ * Block Renderer for Frontend
  *
- * @handle fyeo-block-renderer
- * @deps jquery, wp-i18n, wp-api-fetch
+ * This script fetches restricted block content via REST API
+ * for users who have the required capability.
  */
 
-/* global FyeoBlockRenderer: false */
+import apiFetch from '@wordpress/api-fetch';
+import { sprintf, __ } from '@wordpress/i18n';
 
-const { apiFetch } = wp;
-const { sprintf, __ } = wp.i18n;
 const $ = jQuery;
 
+/**
+ * Convert block content via REST API.
+ *
+ * @param {number} id Post ID.
+ */
 const convertBlock = ( id ) => {
-	// Fetch api.
 	const $containers = $( `.fyeo-content[data-post-id=${ id }]` );
 	$containers.addClass( 'fyeo-content-loading' );
 
@@ -22,7 +25,6 @@ const convertBlock = ( id ) => {
 		.then( ( response ) => {
 			$containers.each( ( index, div ) => {
 				if ( ! response[ index ].trim() ) {
-					// No block. Not replace.
 					return;
 				}
 				const $block = $( response[ index ] );

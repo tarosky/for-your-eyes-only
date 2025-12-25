@@ -1,0 +1,30 @@
+name: Test
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  lint:
+    name: PHP Syntax Check
+    uses: tarosky/workflows/.github/workflows/phpcs.yml@main
+    with:
+      version: 7.4
+
+  assets:
+    uses: tarosky/workflows/.github/workflows/npm.yml@main
+    with:
+      node_version: 22
+      command: lint
+      package: build
+
+  status-check:
+    name: Status Check
+    needs: [ lint, assets ]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - uses: re-actors/alls-green@release/v1
+        with:
+          jobs: ${{ toJSON(needs) }}

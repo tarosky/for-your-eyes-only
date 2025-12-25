@@ -1,6 +1,9 @@
 /vendor/
-/assets/
+/build/
 /node_modules/
 composer.lock
 /wordpress/
 wp-dependencies.json
+/languages/*.mo
+/languages/*.json
+.claude/settings.local.json
