@@ -7,3 +7,4 @@ wp-dependencies.json
 /languages/*.mo
 /languages/*.json
 .claude/settings.local.json
+*.cache

@@ -50,7 +50,7 @@ class Parser extends Singleton {
 			if ( ! $this->capability->has_capability( $capability, $user_id ) ) {
 				$blocks[] = [];
 			} else {
-				$blocks[] = $dom->saveXML( $div );
+				$blocks[] = $html5->saveHTML( $div );
 			}
 		}
 		return $blocks;
@@ -75,6 +75,11 @@ class Parser extends Singleton {
 			'tag_line'   => '',
 			'capability' => '',
 		], $attributes, 'fyeo' );
+
+		// If capability is empty string, apply default (shortcode_atts doesn't replace empty strings).
+		if ( '' === $attributes['capability'] ) {
+			$attributes['capability'] = $this->capability->default_capability();
+		}
 		// Apply default tag_line if empty.
 		if ( empty( $attributes['tag_line'] ) ) {
 			$attributes['tag_line'] = $this->tag_line();
