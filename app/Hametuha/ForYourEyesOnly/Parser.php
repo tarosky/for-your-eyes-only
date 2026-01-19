@@ -75,6 +75,10 @@ class Parser extends Singleton {
 			'tag_line'   => $this->tag_line(),
 			'capability' => $this->capability->default_capability(),
 		], $attributes, 'fyeo' );
+		// If capability is empty string, apply default (shortcode_atts doesn't replace empty strings).
+		if ( '' === $attributes['capability'] ) {
+			$attributes['capability'] = $this->capability->default_capability();
+		}
 		// Build tagline with URL.
 		if ( false !== strpos( $attributes['tag_line'], '%s' ) ) {
 			$attributes['tag_line'] = sprintf( $attributes['tag_line'], $this->login_url() );
