@@ -79,7 +79,7 @@ class Parser extends Singleton {
 		// If capability is empty string, apply default (shortcode_atts doesn't replace empty strings).
 		if ( '' === $attributes['capability'] ) {
 			$attributes['capability'] = $this->capability->default_capability();
-    }
+		}
 		// Apply default tag_line if empty.
 		if ( empty( $attributes['tag_line'] ) ) {
 			$attributes['tag_line'] = $this->tag_line();
