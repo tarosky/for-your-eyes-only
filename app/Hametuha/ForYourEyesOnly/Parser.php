@@ -50,7 +50,7 @@ class Parser extends Singleton {
 			if ( ! $this->capability->has_capability( $capability, $user_id ) ) {
 				$blocks[] = [];
 			} else {
-				$blocks[] = $dom->saveXML( $div );
+				$blocks[] = $html5->saveHTML( $div );
 			}
 		}
 		return $blocks;

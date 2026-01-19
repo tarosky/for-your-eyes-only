@@ -15,7 +15,7 @@ class DirTest extends WP_UnitTestCase {
 	 */
 	private $bootstrap = null;
 
-	public function setUp() {
+	public function setUp():void {
 		$this->bootstrap = \Hametuha\ForYourEyesOnly::get_instance();
 	}
 
