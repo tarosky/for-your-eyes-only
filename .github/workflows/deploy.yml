@@ -1,9 +1,8 @@
 name: Deploy to WordPress.org
 
 on:
-  push:
-    tags:
-      - '*.*.*'
+  release:
+    types: [published]
 
 permissions:
   contents: write
@@ -33,7 +32,7 @@ jobs:
           node-version-file: '.node-version'
 
       - name: Build Plugin
-        run: bash bin/build.sh ${{ github.ref }}
+        run: bash bin/build.sh ${{ github.event.release.tag_name }}
 
       - name: Compile Translations
         run: composer i18n
@@ -44,7 +43,7 @@ jobs:
       - name: Versioning
         uses: tarosky/workflows/actions/versioning@main
         with:
-          version: ${{ github.ref }}
+          version: ${{ github.event.release.tag_name }}
           files: readme.txt,for-your-eyes-only.php
 
       - name: Deploy to WordPress Directory
