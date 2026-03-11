@@ -32,9 +32,6 @@
 	},
 	"author": "Tarosky INC.",
 	"license": "GPL-3.0-or-later",
-	"volta": {
-		"node": "22.21.1"
-	},
 	"devDependencies": {
 		"@kunoichi/grab-deps": "^3.1.4",
 		"@wordpress/env": "^10.35.0",
