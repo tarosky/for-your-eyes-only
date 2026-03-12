@@ -31,8 +31,11 @@ jobs:
         with:
           node-version-file: '.node-version'
 
-      - name: Build Plugin
-        run: bash bin/build.sh ${{ github.event.release.tag_name }}
+      - name: Install dependencies and build Assets
+        run: |
+          composer install --no-dev --prefer-dist
+          npm install
+          npm run package
 
       - name: Compile Translations
         run: composer i18n
