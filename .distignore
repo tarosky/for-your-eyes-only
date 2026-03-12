@@ -24,6 +24,8 @@ multisite.xml
 multisite.xml.dist
 phpcs.xml
 phpcs.ruleset.xml
+phpstan.neon
+phpstan-baseline.neon
 wp-cli.local.yml
 yarn.lock
 tests
