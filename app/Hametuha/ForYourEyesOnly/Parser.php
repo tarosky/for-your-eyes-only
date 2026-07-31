@@ -76,6 +76,10 @@ class Parser extends Singleton {
 			'capability' => '',
 		], $attributes, 'fyeo' );
 
+		// If dynamic is empty string, apply default (shortcode_atts doesn't replace empty strings).
+		if ( '' === $attributes['dynamic'] ) {
+			$attributes['dynamic'] = apply_filters( 'fyeo_default_render_style', '' );
+		}
 		// If capability is empty string, apply default (shortcode_atts doesn't replace empty strings).
 		if ( '' === $attributes['capability'] ) {
 			$attributes['capability'] = $this->capability->default_capability();
