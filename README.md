@@ -70,6 +70,10 @@ We host our code on [Github](https://github.com/tarosky/for-your-eyes-only), so 
 
 ## Changelog
 
+### 1.2.4
+
+* Fix dynamic mode bag on the block.
+
 ### 1.2.1
 
 * Bump PHP and WordPress requirements.
