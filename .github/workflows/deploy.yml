@@ -35,7 +35,7 @@ jobs:
         run: |
           composer install --no-dev --prefer-dist
           npm ci --ignore-scripts
-          npm run package
+          npm run build
 
       - name: Compile Translations
         run: composer i18n
