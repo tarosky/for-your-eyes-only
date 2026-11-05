@@ -18,7 +18,18 @@ class RestBlocksTest extends WP_UnitTestCase {
 	public function setUp(): void {
 		parent::setUp();
 		do_action( 'rest_api_init' );
-		$blocks        = [];
+		// CI does not build assets, so build/blocks/ may be missing and the block unregistered.
+		if ( ! WP_Block_Type_Registry::get_instance()->is_registered( 'fyeo/block' ) ) {
+			register_block_type( 'fyeo/block', [
+				'attributes'      => [
+					'capability' => [ 'type' => 'string' ],
+					'tag_line'   => [ 'type' => 'string' ],
+					'dynamic'    => [ 'type' => 'string' ],
+				],
+				'render_callback' => [ \Hametuha\ForYourEyesOnly\Parser::get_instance(), 'render' ],
+			] );
+		}
+		$blocks = [];
 		foreach ( [ 'read', 'edit_posts', 'manage_options' ] as $cap ) {
 			$blocks[] = sprintf(
 				'<!-- wp:fyeo/block {"capability":"%1$s","tag_line":"Need %1$s"} --><p>Secret for %1$s</p><!-- /wp:fyeo/block -->',
