@@ -30,9 +30,13 @@ class Parser extends Singleton {
 	/**
 	 * Parse contents.
 	 *
+	 * Returns one entry per restricted block in document order.
+	 * Each entry is the block HTML if the user has the capability,
+	 * or an empty string if not, so that the response is always string[].
+	 *
 	 * @param null|int|\WP_Post $post
 	 * @param int|null          $user_id
-	 * @return array
+	 * @return string[]
 	 */
 	public function parse( $post = null, $user_id = null ) {
 		$blocks = [];
@@ -48,7 +52,7 @@ class Parser extends Singleton {
 			/* @var \DOMElement $div */
 			$capability = $div->getAttribute( 'data-capability' );
 			if ( ! $this->capability->has_capability( $capability, $user_id ) ) {
-				$blocks[] = [];
+				$blocks[] = '';
 			} else {
 				$blocks[] = $html5->saveHTML( $div );
 			}
