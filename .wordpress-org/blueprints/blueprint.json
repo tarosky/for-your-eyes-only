@@ -1,0 +1,38 @@
+{
+    "$schema": "https://playground.wordpress.net/blueprint-schema.json",
+    "meta": {
+        "title": "For Your Eyes Only demo: a members-only newsletter",
+        "description": "Open a newsletter post in the block editor with three Restricted Blocks for subscribers, contributors and administrators, each with its own visibility settings.",
+        "author": "tarosky",
+        "categories": [
+            "Content"
+        ]
+    },
+    "landingPage": "/wp-admin/post.php?post=1000&action=edit",
+    "preferredVersions": {
+        "php": "8.2",
+        "wp": "latest"
+    },
+    "features": {
+        "networking": true
+    },
+    "steps": [
+        {
+            "step": "login"
+        },
+        {
+            "step": "installPlugin",
+            "pluginData": {
+                "resource": "wordpress.org/plugins",
+                "slug": "for-your-eyes-only"
+            },
+            "options": {
+                "activate": true
+            }
+        },
+        {
+            "step": "runPHP",
+            "code": "<?php\n/**\n * Live Preview のデモデータ。\n *\n * シナリオ: 架空の会員制ニュースレター「The Quiet Ledger」の記事。無料の導入部分のあとに\n * Restricted Block を 3 つ並べる（購読者向け本文／寄稿者向けメモ＋独自の案内文／管理者向け・PHP 描画）。\n * 着地はこの記事のブロックエディタ（ID を 1000 に固定）で、ブロックを選ぶとサイドバーに設定が出る。\n *\n * このファイルがマスター。編集したら次で blueprint.json に埋め込むこと:\n *   php <skill>/scripts/blueprint.php embed .\n */\nrequire '/wordpress/wp-load.php';\n\n// runPHP はログインユーザー無しで動く。権限チェックのある API（tax_input など）が黙って無視されるので、管理者として実行する。\nwp_set_current_user( 1 );\n\nupdate_option( 'blogname', 'The Quiet Ledger' );\nupdate_option( 'blogdescription', 'A members-only newsletter on personal finance' );\n\n/**\n * 段落ブロックを作る。\n *\n * @param string $html Inner HTML of the paragraph.\n * @return array\n */\n$paragraph = function ( $html ) {\n\treturn array(\n\t\t'blockName'    => 'core/paragraph',\n\t\t'attrs'        => array(),\n\t\t'innerBlocks'  => array(),\n\t\t'innerHTML'    => '<p>' . $html . '</p>',\n\t\t'innerContent' => array( '<p>' . $html . '</p>' ),\n\t);\n};\n\n/**\n * 見出しブロックを作る。\n *\n * @param string $text Heading text.\n * @return array\n */\n$heading = function ( $text ) {\n\t$html = '<h2 class=\"wp-block-heading\">' . esc_html( $text ) . '</h2>';\n\treturn array(\n\t\t'blockName'    => 'core/heading',\n\t\t'attrs'        => array(),\n\t\t'innerBlocks'  => array(),\n\t\t'innerHTML'    => $html,\n\t\t'innerContent' => array( $html ),\n\t);\n};\n\n/**\n * Restricted Block を作る。保存形式は InnerBlocks の中身だけ（ラッパー無し）。\n *\n * @param array $attrs  Block attributes (capability, tag_line, dynamic).\n * @param array $inner  Inner blocks.\n * @return array\n */\n$restricted = function ( $attrs, $inner ) {\n\treturn array(\n\t\t'blockName'    => 'fyeo/block',\n\t\t'attrs'        => $attrs,\n\t\t'innerBlocks'  => $inner,\n\t\t'innerHTML'    => '',\n\t\t'innerContent' => array_fill( 0, count( $inner ), null ),\n\t);\n};\n\n$blocks = array(\n\t// 無料で読める導入部分。\n\t$paragraph( 'Welcome to this week\\'s issue. The first part is free for everyone; the rest is split into sections that only certain readers can see.' ),\n\t$paragraph( '<strong>Try it:</strong> select a restricted block to see its settings in the sidebar &mdash; who can see it, how it is rendered, and the message shown to everyone else.' ),\n\n\t// 1. 購読者（ログインユーザー）向けの本文。非同期（JS + REST API）描画。\n\t$restricted(\n\t\tarray( 'capability' => 'read' ),\n\t\tarray(\n\t\t\t$heading( 'This week: building a six-month buffer' ),\n\t\t\t$paragraph( 'Start by listing fixed costs only. Most readers overestimate how much they need because they include discretionary spending in the target.' ),\n\t\t\t$paragraph( 'Then automate a transfer on payday so the buffer grows before you have a chance to spend it.' ),\n\t\t)\n\t),\n\n\t// 2. 寄稿者向けの編集メモ。権限の無い人には独自の案内文（%s はログイン URL）を表示する。\n\t$restricted(\n\t\tarray(\n\t\t\t'capability' => 'edit_posts',\n\t\t\t'tag_line'   => 'Editorial notes are visible to contributors only. <a href=\"%s\" rel=\"nofollow\">Log in</a> with a contributor account to read them.',\n\t\t),\n\t\tarray(\n\t\t\t$paragraph( '<em>Editor\\'s note:</em> fact-check the savings-rate figures against the latest survey before next week\\'s follow-up.' ),\n\t\t)\n\t),\n\n\t// 3. 管理者だけに見せる運営メモ。PHP で描画する（キャッシュの無いサイト向け）。\n\t$restricted(\n\t\tarray(\n\t\t\t'capability' => 'manage_options',\n\t\t\t'dynamic'    => 'dynamic',\n\t\t),\n\t\tarray(\n\t\t\t$paragraph( '<em>Admin only:</em> this issue goes out to 1,284 subscribers on Friday at 7:00 am.' ),\n\t\t)\n\t),\n);\n\n// 着地 URL を固定するため、ID を 1000 にする。\n$post_id = wp_insert_post( array(\n\t'import_id'    => 1000,\n\t'post_type'    => 'post',\n\t'post_status'  => 'publish',\n\t'post_title'   => 'Issue #42: The Six-Month Buffer',\n\t'post_name'    => 'issue-42-six-month-buffer',\n\t// wp_insert_post() は wp_unslash() するので、属性 JSON のエスケープ（< など）が壊れないよう slash しておく。\n\t'post_content' => wp_slash( serialize_blocks( $blocks ) ),\n) );\n\n// ブロックエディタのウェルカムガイドを閉じておく。\n$preferences                   = get_user_meta( 1, $GLOBALS['wpdb']->get_blog_prefix() . 'persisted_preferences', true );\n$preferences                   = is_array( $preferences ) ? $preferences : array();\n$preferences['core/edit-post'] = array_merge(\n\tisset( $preferences['core/edit-post'] ) ? (array) $preferences['core/edit-post'] : array(),\n\tarray( 'welcomeGuide' => false )\n);\n$preferences['_modified']      = gmdate( 'c' );\nupdate_user_meta( 1, $GLOBALS['wpdb']->get_blog_prefix() . 'persisted_preferences', $preferences );\n\n// 不要な既定コンテンツを片付ける。\nwp_delete_post( 1, true ); // Hello world!\nwp_delete_post( 2, true ); // Sample Page\n"
+        }
+    ]
+}
