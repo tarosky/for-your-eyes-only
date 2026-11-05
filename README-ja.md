@@ -2,7 +2,7 @@
 
 Contributors: tarosky, Takahashi_Fumiki, hametuha
 Tags: membership, login, restrict
-Tested up to: 6.9
+Tested up to: 7.1
 Stable tag: nightly
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
