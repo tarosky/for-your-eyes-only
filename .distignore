@@ -8,6 +8,7 @@
 .travis.yml
 .DS_Store
 .claude
+.wordpress-org
 Thumbs.db
 behat.yml
 bin

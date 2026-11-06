@@ -2,7 +2,7 @@
 
 Contributors: tarosky, Takahashi_Fumiki, hametuha  
 Tags: membership, login, restrict  
-Tested up to: 6.9  
+Tested up to: 7.1  
 Stable tag: nightly  
 License: GPLv3 or later  
 License URI: http://www.gnu.org/licenses/gpl-3.0.txt
@@ -69,6 +69,11 @@ We host our code on [Github](https://github.com/tarosky/for-your-eyes-only), so 
 1. You get a new block to restrict non-members.
 
 ## Changelog
+
+### 1.2.6
+
+* Fix "Failed authentication" shown to logged-in users who lack the block's capability. The block's tag line is now displayed as intended.
+* Confirm compatibility with WordPress 7.1.
 
 ### 1.2.4
 

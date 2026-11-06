@@ -24,10 +24,13 @@ const convertBlock = ( id ) => {
 	} )
 		.then( ( response ) => {
 			$containers.each( ( index, div ) => {
-				if ( ! response[ index ].trim() ) {
+				const html = Array.isArray( response ) ? response[ index ] : null;
+				// Non-string (e.g. [] from older versions) or empty means
+				// no capability: keep the tag line as is.
+				if ( 'string' !== typeof html || ! html.trim() ) {
 					return;
 				}
-				const $block = $( response[ index ] );
+				const $block = $( html );
 				$( div ).replaceWith( $block );
 				$block.trigger( 'fyeo.block.updated' );
 			} );
